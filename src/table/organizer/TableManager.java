@@ -10,16 +10,31 @@ public class TableManager {
 	private int nextId;
 	private List<Person> persons;
 	private List<Consumable> consumables;
+	private int tip;
+	private static TableManager tableManager = new TableManager();
 
-	public TableManager() {
-		nextId = 0;
+	public static TableManager getInstance(){
+		return tableManager;
 	}
 	
+	private TableManager() {
+		nextId = 0;
+		tip = 10;
+	}
+	
+	public int getTip() {
+		return tip;
+	}
+
+	public void setTip(int tip) {
+		this.tip = tip;
+	}
+
 	/**
 	 * 
 	 * @return total bill price in cents
 	 */
-	public int getBill(){
+	public int getTotalBill(){
 		
 		int price = 0;
 		
@@ -56,6 +71,15 @@ public class TableManager {
 		consumables.add(newConsumable);
 		
 		return newConsumable;
+	}
+	
+	boolean removeConsumable(int id){
+		return consumables.remove(new Consumable(null, 0, 0, id));
+	}
+	
+	void addConsumableToPerson(Consumable consumable, Person person){
+		consumable.addPerson(person);
+		person.addConsumable(consumable);
 	}
 	
 }
