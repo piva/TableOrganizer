@@ -2,4 +2,6 @@
 <resources>
     <string name="hello">Hello World, Table!</string>
     <string name="app_name">Table Organizer</string>
+    <string name="consumables">Itens</string>
+    <string name="persons">Persons</string>
 </resources>
