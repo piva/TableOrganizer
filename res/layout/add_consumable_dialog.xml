@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:orientation="vertical"
+  android:layout_width="fill_parent"
+  android:layout_height="fill_parent">
+    <TextView android:text="@string/name"
+    	android:id="@+id/consumable_name_label"
+    	android:layout_width="wrap_content" 
+    	android:layout_height="wrap_content"></TextView>
+    <EditText android:id="@+id/consumable_name_input" 
+    	android:layout_width="fill_parent" 
+    	android:layout_height="wrap_content"
+    	android:maxLength="20"
+    	>
+    </EditText>
+    <TextView android:text="@string/quantity" 
+    	android:id="@+id/consumable_quantity_label" 
+    	android:layout_width="wrap_content" 
+    	android:layout_height="wrap_content"></TextView>
+    <EditText android:id="@+id/consumable_quantity_input" 
+    	android:layout_width="fill_parent" 
+   		android:layout_height="wrap_content" 
+    	android:inputType="number"
+    	android:maxLength="2"></EditText>
+    <TextView android:text="@string/price"
+		android:id="@+id/consumable_price_label" 
+		android:layout_width="wrap_content" 
+		android:layout_height="wrap_content"></TextView>
+    <EditText android:id="@+id/consumable_price_input" 
+    	android:layout_width="fill_parent" 
+    	android:layout_height="wrap_content" 
+    	android:inputType="numberDecimal"
+    	android:maxLength="6"/>
+   	<Button android:id="@+id/add_item_ok"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/ok" />
+    <Button android:id="@+id/add_item_cancel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/cancel" />
+</LinearLayout>

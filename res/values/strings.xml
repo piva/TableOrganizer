@@ -4,4 +4,11 @@
     <string name="app_name">Table Organizer</string>
     <string name="consumables">Itens</string>
     <string name="persons">Persons</string>
+    <string name="name">Nome</string>
+    <string name="quantity">Quantidade</string>
+    <string name="price">Preço</string>
+    <string name="new_item">Novo Item</string>
+    <string name="ok">Aceitar</string>
+    <string name="cancel">Cancelar</string>
+    <string name="add">+</string>
 </resources>

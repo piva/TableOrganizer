@@ -72,4 +72,8 @@ public class Person {
 		this.name = name;
 	}
 
+	public void removeConsumable(Consumable consumable) {
+		consumables.remove(consumable);
+	}
+
 }

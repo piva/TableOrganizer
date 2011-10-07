@@ -79,6 +79,13 @@ public class Consumable {
 			return (getTotalPrice()/persons.size() + 1);
 		}
 	}
-	
+
+	public int getId() {
+		return id;
+	}
+
+	public void removePerson(Person person) {
+		persons.remove(person);
+	}
 }
 
