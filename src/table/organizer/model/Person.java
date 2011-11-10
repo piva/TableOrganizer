@@ -3,7 +3,10 @@ package table.organizer.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import table.organizer.TableManager;
+
 public class Person {
+	TableManager table = TableManager.getInstance();
 	List<Consumable> consumables;
 	String name;
 	
@@ -12,17 +15,18 @@ public class Person {
 		consumables = new ArrayList<Consumable>();
 	}
 	
+	public String getID(){
+		return name;
+	}
+	
 	/**
 	 * 
-	 * @param tip in percentage
+	 * @param
 	 * @return personal bill to be paid in cents
 	 */
-	public int getPersonalBill(int tip){
+	public int getPersonalBill(){
 		int bill = 0;
-		
-		if(tip<0){
-			tip=0;
-		}
+		int tip = table.getTip();
 		
 		for (Consumable consumable : consumables) {
 			bill += consumable.getPricePerPerson();

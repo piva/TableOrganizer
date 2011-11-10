@@ -12,10 +12,23 @@ public class TableManager {
 	private List<Person> persons;
 	private List<Consumable> consumables;
 	private int tip;
+	
+	protected String POSITION = "POSITION";
+	
 	private static TableManager tableManager = new TableManager();
 
 	public static TableManager getInstance(){
 		return tableManager;
+	}
+	
+	public String printPrice (int cents) {
+		String cent;
+		if (cents%100 < 10)
+			cent = "0" + cents%100;
+		else
+			cent = "" + cents%100;
+		String price = "$" + cents/100 + "." + cent;
+		return price;
 	}
 	
 	private TableManager() {
@@ -30,7 +43,15 @@ public class TableManager {
 		return tip;
 	}
 
+	/**
+	 * 
+	 * @param tip in percentage
+	 */
 	public void setTip(int tip) {
+		if(tip<0){
+			tip=0;
+		}
+		
 		this.tip = tip;
 	}
 
@@ -125,6 +146,14 @@ public class TableManager {
 		return consumables.get(position);
 	}
 	
+	public List<Person> getPersons() {
+		return persons;
+	}
+
+	public List<Consumable> getConsumables() {
+		return consumables;
+	}
+
 	public Person getPerson (int position) {
 		return persons.get(position);
 	}

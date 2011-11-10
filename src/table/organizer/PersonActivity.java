@@ -2,19 +2,15 @@ package table.organizer;
 
 import table.organizer.exceptions.DuplicatePersonException;
 import table.organizer.model.Person;
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ListActivity;
 import android.content.Context;
-import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -35,19 +31,11 @@ public class PersonActivity extends ListActivity {
 		super.onCreate(savedInstanceState);
 		
 		ListView lv = getListView();
-		lv.addHeaderView(makeListHeader());
 		personAdapter = new PersonAdapter(this);
+		lv.addHeaderView(makeListHeader(personAdapter));
 		setListAdapter(personAdapter);
 		lv.setTextFilterEnabled(true);
 
-		lv.setOnItemClickListener(new OnItemClickListener() {
-			public void onItemClick(AdapterView<?> parent, View view,
-					int position, long id) {
-				// When clicked, show a toast with the TextView text
-				Toast.makeText(getApplicationContext(), ((TextView) view).getText(),
-						Toast.LENGTH_SHORT).show();
-			}
-		});
 	}
 	
 	@Override
@@ -89,6 +77,7 @@ public class PersonActivity extends ListActivity {
 					dialog.dismiss();
 				} catch (DuplicatePersonException e) {
 					// TODO Auto-generated catch block
+					Toast.makeText(getApplicationContext(), R.string.duplicatePerson, Toast.LENGTH_SHORT);
 				}
 				
 			}
@@ -104,7 +93,7 @@ public class PersonActivity extends ListActivity {
 		return dialog;
 	}
 
-	private View makeListHeader() {
+	private View makeListHeader(final PersonAdapter personAdapter) {
 		LayoutInflater inflater = (LayoutInflater)this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View v = inflater.inflate(R.layout.person_list_header, null);;
 		Button insert = (Button)v.findViewById(R.id.plus_button);
@@ -113,6 +102,7 @@ public class PersonActivity extends ListActivity {
 			@Override
 			public void onClick(View v) {
 				showDialog(DIALOG_CREATE_ITEM);
+				personAdapter.notifyDataSetChanged();
 			}
 		});
 		return v;
@@ -173,7 +163,7 @@ public class PersonActivity extends ListActivity {
 		}
 
 		/* Minha propria view, tirada do xml list_item*/
-		public View getView(int position, View convertView, ViewGroup parent) {
+		public View getView(final int position, View convertView, ViewGroup parent) {
 			View v;
 			if (convertView == null) {
 				v = mInflater.inflate(R.layout.person_item, parent, false);
@@ -182,12 +172,27 @@ public class PersonActivity extends ListActivity {
 				v = convertView;
 			}
 			
-			TextView personView= (TextView) v.findViewById(R.id.person);
+			TextView personView = (TextView) v.findViewById(R.id.person);
+			TextView priceView = (TextView) v.findViewById(R.id.price);
 			Button removeButton = (Button) v.findViewById(R.id.remove);
 			
 			final Person person = table.getPerson(position);
 			
 			personView.setText(person.getName());
+			priceView.setText(table.printPrice(person.getPersonalBill()));
+			
+			v.setOnClickListener(new OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					Intent intent = new Intent(getApplicationContext(), ConsumedItemsActivity.class);
+					Bundle extras = new Bundle();
+					extras.putInt(table.POSITION, position);
+					intent.putExtras(extras);
+					startActivity(intent);
+					notifyDataSetChanged();
+				}
+			});
 			
 			removeButton.setOnClickListener(new OnClickListener() {
 				

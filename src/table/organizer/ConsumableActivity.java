@@ -1,25 +1,20 @@
 package table.organizer;
 
 import table.organizer.model.Consumable;
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ListActivity;
 import android.content.Context;
-import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class ConsumableActivity extends ListActivity {
 	
@@ -31,26 +26,18 @@ public class ConsumableActivity extends ListActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		
-		
 		super.onCreate(savedInstanceState);
 		
-		ListView lv = getListView();
-		lv.addHeaderView(makeListHeader());
 		consumableAdapter = new ConsumableAdapter(this);
+		
+		ListView lv = getListView();
+		lv.addHeaderView(makeListHeader(consumableAdapter));
 
 		
 		setListAdapter(consumableAdapter);
 
 		lv.setTextFilterEnabled(true);
 
-		lv.setOnItemClickListener(new OnItemClickListener() {
-			public void onItemClick(AdapterView<?> parent, View view,
-					int position, long id) {
-				// When clicked, show a toast with the TextView text
-				Toast.makeText(getApplicationContext(), ((TextView) view).getText(),
-						Toast.LENGTH_SHORT).show();
-			}
-		});
 	}
 	
 	@Override
@@ -107,7 +94,7 @@ public class ConsumableActivity extends ListActivity {
 		return dialog;
 	}
 
-	private View makeListHeader() {
+	private View makeListHeader(final ConsumableAdapter consumableAdapter) {
 		LayoutInflater inflater = (LayoutInflater)this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View v = inflater.inflate(R.layout.consumable_list_header, null);;
 		Button insert = (Button)v.findViewById(R.id.plus_button);
@@ -116,6 +103,7 @@ public class ConsumableActivity extends ListActivity {
 			@Override
 			public void onClick(View v) {
 				showDialog(DIALOG_CREATE_ITEM);
+				consumableAdapter.notifyDataSetChanged();
 			}
 		});
 		return v;
@@ -176,7 +164,7 @@ public class ConsumableActivity extends ListActivity {
 		}
 
 		/* Minha propria view, tirada do xml list_item*/
-		public View getView(int position, View convertView, ViewGroup parent) {
+		public View getView(final int position, View convertView, ViewGroup parent) {
 			View v;
 			if (convertView == null) {
 				v = mInflater.inflate(R.layout.consumable_item, parent, false);
@@ -196,8 +184,21 @@ public class ConsumableActivity extends ListActivity {
 			consumableView.setText(consumable.getName());
 			quantityView.setText(""+consumable.getQuantity());
 			numPersonsView.setText(""+consumable.getPersons().size());
-			priceView.setText(""+consumable.getPrice());
+			priceView.setText(table.printPrice(consumable.getPrice()));
 			
+			v.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					Intent intent = new Intent(getApplicationContext(), PersonsConsumingActivity.class);
+					Bundle extras = new Bundle();
+					extras.putInt(table.POSITION, position);
+					intent.putExtras(extras);
+					startActivity(intent);
+					notifyDataSetChanged();
+				}
+			});
+
 			removeButton.setOnClickListener(new OnClickListener() {
 				
 				@Override

@@ -3,7 +3,7 @@
     <string name="hello">Hello World, Table!</string>
     <string name="app_name">Table Organizer</string>
     <string name="consumables">Itens</string>
-    <string name="persons">Persons</string>
+    <string name="persons">Pessoas</string>
     <string name="name">Nome</string>
     <string name="quantity">Quantidade</string>
     <string name="price">Preço</string>
@@ -11,4 +11,8 @@
     <string name="ok">Aceitar</string>
     <string name="cancel">Cancelar</string>
     <string name="add">+</string>
+    <string name="mine">Mostrar somente itens desta pessoa</string>
+    <string name="duplicatePerson">Não é permitido nomes repetidos</string>
+    <string name="personsConsuming">Mostrar somente consumidores deste item</string>
+    <string name="currency">R$</string>
 </resources>

@@ -73,11 +73,14 @@ public class Consumable {
 	}
 
 	public int getPricePerPerson() {
-		if(getTotalPrice()%persons.size() == 0){
-			return (getTotalPrice()/persons.size());	
-		} else {
-			return (getTotalPrice()/persons.size() + 1);
-		}
+		if(persons.size()!=0){
+			if(getTotalPrice()%persons.size() == 0){
+				return (getTotalPrice()/persons.size());	
+			} else {
+				return (getTotalPrice()/persons.size() + 1);
+			}
+		}else
+			return getTotalPrice();
 	}
 
 	public int getId() {
