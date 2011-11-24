@@ -40,6 +40,13 @@ public class PersonActivity extends ListActivity {
 	}
 	
 	@Override
+	public void onResume() {
+		super.onResume();
+		
+		personAdapter.notifyDataSetChanged();
+	}
+	
+	@Override
 	protected Dialog onCreateDialog(int id) {
 		Dialog dialog = createEmptyDialog();
 	    switch(id) {
@@ -64,21 +71,20 @@ public class PersonActivity extends ListActivity {
 		final Dialog dialog = new Dialog(this);
 		dialog.setContentView(R.layout.add_person_dialog);
 		dialog.setTitle(getResources().getString(R.string.new_item));
-		
+		final EditText nameEditText = (EditText) dialog.findViewById(R.id.person_name_input);
 		Button ok = (Button) dialog.findViewById(R.id.add_item_ok);
 		ok.setOnClickListener(new OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
-				EditText nameEditText = (EditText) dialog.findViewById(R.id.person_name_input);
-				
 				String name = nameEditText.getText().toString();
 				try {
 					personAdapter.add(name);
+					nameEditText.setText("");
 					dialog.dismiss();
 				} catch (DuplicatePersonException e) {
 					// TODO Auto-generated catch block
-					Toast.makeText(getApplicationContext(), R.string.duplicatePerson, Toast.LENGTH_SHORT);
+					Toast.makeText(getApplicationContext(), R.string.duplicatePerson, Toast.LENGTH_SHORT).show();
 				}
 				
 			}

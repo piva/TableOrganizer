@@ -41,6 +41,13 @@ public class ConsumableActivity extends ListActivity {
 	}
 	
 	@Override
+	public void onResume() {
+		super.onResume();
+		
+		consumableAdapter.notifyDataSetChanged();
+	}
+	
+	@Override
 	protected Dialog onCreateDialog(int id) {
 		Dialog dialog = createEmptyDialog();
 	    switch(id) {
@@ -57,7 +64,6 @@ public class ConsumableActivity extends ListActivity {
 
 		dialog.setContentView(R.layout.add_consumable_dialog);
 		dialog.setTitle("Custom Dialog");
-
 		return dialog;
 	}
 	
@@ -65,22 +71,25 @@ public class ConsumableActivity extends ListActivity {
 		final Dialog dialog = new Dialog(this);
 		dialog.setContentView(R.layout.add_consumable_dialog);
 		dialog.setTitle(getResources().getString(R.string.new_item));
-		
+		final EditText nameEditText = (EditText) dialog.findViewById(R.id.consumable_name_input);
+		final EditText quantityEditText = (EditText) dialog.findViewById(R.id.consumable_quantity_input);
+		final EditText priceEditText = (EditText) dialog.findViewById(R.id.consumable_price_input);
 		Button ok = (Button) dialog.findViewById(R.id.add_item_ok);
 		ok.setOnClickListener(new OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
-				EditText nameEditText = (EditText) dialog.findViewById(R.id.consumable_name_input);
-				EditText quantityEditText = (EditText) dialog.findViewById(R.id.consumable_quantity_input);
-				EditText priceEditText = (EditText) dialog.findViewById(R.id.consumable_price_input);
+				
 				
 				String name = nameEditText.getText().toString();
 				int quantity = Integer.parseInt(quantityEditText.getText().toString());
 				double price = Double.parseDouble(priceEditText.getText().toString());
 				consumableAdapter.add(name, (int) (price*100), quantity);
+				nameEditText.setText("");
+				nameEditText.requestFocus();
+				quantityEditText.setText("");
+				priceEditText.setText("");
 				dialog.dismiss();
-				
 			}
 		});
 		Button cancel = (Button) dialog.findViewById(R.id.add_item_cancel);
