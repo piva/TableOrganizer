@@ -1,5 +1,6 @@
 package table.organizer;
 
+import table.organizer.database.PersistenceManager;
 import table.organizer.exceptions.DuplicatePersonException;
 import table.organizer.model.Person;
 import android.app.Dialog;

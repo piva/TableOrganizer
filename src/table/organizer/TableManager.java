@@ -3,6 +3,7 @@ package table.organizer;
 import java.util.ArrayList;
 import java.util.List;
 
+import table.organizer.database.PersistenceManager;
 import table.organizer.exceptions.DuplicatePersonException;
 import table.organizer.model.Consumable;
 import table.organizer.model.Person;
@@ -114,6 +115,15 @@ public class TableManager {
 		return newConsumable;
 	}
 	
+	Consumable addConsumable(int id, String name, int price, int quantity){
+		
+		Consumable newConsumable = new Consumable(name, price, quantity, id);
+		
+		consumables.add(newConsumable);
+		
+		return newConsumable;
+	}
+	
 	boolean removeConsumable(int id){
 		Consumable consumable = getConsumableById(id);
 		if (consumable == null)
@@ -132,7 +142,7 @@ public class TableManager {
 		}
 		return null;
 	}
-
+	
 	void addConsumableToPerson(Consumable consumable, Person person){
 		consumable.addPerson(person);
 		person.addConsumable(consumable);
@@ -160,5 +170,10 @@ public class TableManager {
 
 	public int getNumberOfPersons() {
 		return persons.size();
+	}
+
+	public void clear() {
+		persons.clear();
+		consumables.clear();
 	}
 }
