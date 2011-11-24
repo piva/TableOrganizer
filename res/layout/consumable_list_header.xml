@@ -1,14 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
   xmlns:android="http://schemas.android.com/apk/res/android"
-  android:orientation="vertical"
+  android:orientation="horizontal"
   android:layout_width="fill_parent"
   android:layout_height="fill_parent">
-  
-  <Button android:id="@+id/plus_button"
+  <TextView android:id="@+id/add_consumable_text"
+  			  android:text="@string/add_item"
+  			  android:textAppearance="?android:attr/textAppearanceLarge"
+    		  android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:textColor="#FFFFFF"
+              android:layout_alignParentLeft="true"
+              android:layout_alignBaseline="@+id/plus_button"/>
+  <Button android:id="@id/plus_button"
               android:layout_width="wrap_content"
-              android:layout_height="fill_parent"
+              android:layout_height="wrap_content"
               android:text="@string/add"
-              android:textColor="#FFF" />
+              android:textColor="#FFF"
+              android:layout_alignParentRight="true"/>
     
 </LinearLayout>

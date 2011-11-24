@@ -15,4 +15,5 @@
     <string name="duplicatePerson">Não é permitido nomes repetidos</string>
     <string name="personsConsuming">Mostrar somente consumidores deste item</string>
     <string name="currency">R$</string>
+    <string name="add_item">Adicionar</string>
 </resources>
