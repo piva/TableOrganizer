@@ -3,8 +3,10 @@ package table.organizer;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import table.organizer.database.TableManager;
 import table.organizer.model.Consumable;
 import table.organizer.model.Person;
+import table.organizer.utils.MoneyUtils;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
@@ -20,7 +22,7 @@ import android.widget.TextView;
 
 public class PersonsConsumingActivity extends Activity {
 
-	TableManager table = TableManager.getInstance();
+	final private TableManager table = TableManager.getInstance(this);
 
 	/** Called when the activity is first created. */
 	@Override
@@ -30,8 +32,8 @@ public class PersonsConsumingActivity extends Activity {
 	    setContentView(R.layout.consumed_items_layout);
 	    
 	    Bundle extras = getIntent().getExtras();
-	    int position = extras.getInt(table.POSITION);
-	    final Consumable consumable = table.getConsumable(position);
+	    int consumableId = extras.getInt(table.POSITION);
+	    final Consumable consumable = table.getConsumable(consumableId);
 	    
 	    TextView name = (TextView) findViewById(R.id.name);
 	    TextView price = (TextView) findViewById(R.id.price);
@@ -53,7 +55,7 @@ public class PersonsConsumingActivity extends Activity {
 			@Override
 			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 				if (isChecked) {
-					for (Person person: table.getPersons()) {
+					for (Person person: table.fetchPersons()) {
 						if (!checkListAdapter.isChecked(person))
 							checkListAdapter.remove(person);
 					}
@@ -71,7 +73,7 @@ public class PersonsConsumingActivity extends Activity {
 
 	private void populateCheckList(Consumable consumable,
 			final PersonCheckListAdapter checkListAdapter) {
-		for (Person person : table.getPersons()) {
+		for (Person person : table.fetchPersons()) {
 			checkListAdapter.add(person, false);
 		}
 		
@@ -191,7 +193,7 @@ class PersonCheckListAdapter extends BaseAdapter{
 								
 				setChecked(person.getName(), isChecked);
 				
-				price.setText(TableManager.getInstance().printPrice(consumable.getPricePerPerson()));
+				price.setText(MoneyUtils.printPrice(consumable.getPricePerPerson()));
 			}
 		});
 		

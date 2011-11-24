@@ -1,5 +1,8 @@
 package table.organizer;
 
+import java.util.List;
+
+import table.organizer.database.TableManager;
 import table.organizer.model.Consumable;
 import android.app.Dialog;
 import android.app.ListActivity;
@@ -17,6 +20,10 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 public class ConsumableActivity extends ListActivity {
+
+	// FIXME: popular no onCreate/Resume change notify
+	private List<Consumable> consumables;
+	final private TableManager table = TableManager.getInstance(this);
 	
 	protected static final int DIALOG_CREATE_ITEM = 0;
 	final String tag = "TAG";
@@ -120,15 +127,14 @@ public class ConsumableActivity extends ListActivity {
 
 	private class ConsumableAdapter extends BaseAdapter {
 		private LayoutInflater mInflater;
-		final private TableManager table = TableManager.getInstance();
 		
 		public void add (String name, int price, int quantity) {
-			table.addConsumable(name, price, quantity);
+			table.createConsumable(name, price, quantity);
 			notifyDataSetChanged();
 		}
 		
 		public void remove (int id){
-			table.removeConsumable(id);
+			table.deleteConsumable(id);
 			notifyDataSetChanged();
 		}
 		
@@ -188,7 +194,7 @@ public class ConsumableActivity extends ListActivity {
 			TextView priceView = (TextView) v.findViewById(R.id.price);
 			Button removeButton = (Button) v.findViewById(R.id.remove);
 			
-			final Consumable consumable = table.getConsumable(position);
+			final Consumable consumable = consumables.get(position);
 			
 			consumableView.setText(consumable.getName());
 			quantityView.setText(""+consumable.getQuantity());
@@ -201,7 +207,7 @@ public class ConsumableActivity extends ListActivity {
 				public void onClick(View v) {
 					Intent intent = new Intent(getApplicationContext(), PersonsConsumingActivity.class);
 					Bundle extras = new Bundle();
-					extras.putInt(table.POSITION, position);
+					extras.putInt(table.POSITION, consumable.getId());
 					intent.putExtras(extras);
 					startActivity(intent);
 					notifyDataSetChanged();

@@ -3,10 +3,7 @@ package table.organizer.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import table.organizer.TableManager;
-
 public class Person {
-	TableManager table = TableManager.getInstance();
 	List<Consumable> consumables;
 	String name;
 	
@@ -26,14 +23,12 @@ public class Person {
 	 */
 	public int getPersonalBill(){
 		int bill = 0;
-		int tip = table.getTip();
 		
 		for (Consumable consumable : consumables) {
 			bill += consumable.getPricePerPerson();
 		}
 		
-		//Int division rounded floor
-		return (bill + (bill*tip)/100);
+		return bill;
 	}
 	
 	public List<Consumable> getConsumables() {

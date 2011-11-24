@@ -1,6 +1,8 @@
 package table.organizer;
 
-import table.organizer.database.PersistenceManager;
+import java.util.List;
+
+import table.organizer.database.TableManager;
 import table.organizer.exceptions.DuplicatePersonException;
 import table.organizer.model.Person;
 import android.app.Dialog;
@@ -20,6 +22,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class PersonActivity extends ListActivity {
+	
+	// FIXME: popular no onCreate/Resume change notify
+	List<Person> persons;
+	final private TableManager tm = TableManager.getInstance(this); 
 	
 	protected static final int DIALOG_CREATE_ITEM = 0;
 	final String tag = "TAG";
@@ -117,15 +123,14 @@ public class PersonActivity extends ListActivity {
 
 	private class PersonAdapter extends BaseAdapter {
 		private LayoutInflater mInflater;
-		final private TableManager table = TableManager.getInstance();
 		
 		public void add (String name) throws DuplicatePersonException{
-			table.addPerson(name);
+			tm.createPerson(name);
 			notifyDataSetChanged();
 		}
 		
 		public void remove (String name){
-			table.removePerson(name);
+			tm.deletePerson(name);
 			notifyDataSetChanged();
 		}
 		
@@ -145,7 +150,7 @@ public class PersonActivity extends ListActivity {
 		 * @see android.widget.ListAdapter#getCount()
 		 */
 		public int getCount() {
-			return table.getNumberOfPersons();
+			return tm.getNumberOfPersons();
 		}
 
 		/**
@@ -183,10 +188,10 @@ public class PersonActivity extends ListActivity {
 			TextView priceView = (TextView) v.findViewById(R.id.price);
 			Button removeButton = (Button) v.findViewById(R.id.remove);
 			
-			final Person person = table.getPerson(position);
+			final Person person = persons.get(position);
 			
 			personView.setText(person.getName());
-			priceView.setText(table.printPrice(person.getPersonalBill()));
+			priceView.setText(tm.printPrice(person.getPersonalBill()));
 			
 			v.setOnClickListener(new OnClickListener() {
 				
@@ -194,7 +199,7 @@ public class PersonActivity extends ListActivity {
 				public void onClick(View v) {
 					Intent intent = new Intent(getApplicationContext(), ConsumedItemsActivity.class);
 					Bundle extras = new Bundle();
-					extras.putInt(table.POSITION, position);
+					extras.putString(tm.POSITION, person.getName());
 					intent.putExtras(extras);
 					startActivity(intent);
 					notifyDataSetChanged();

@@ -1,11 +1,6 @@
 package table.organizer;
 
-import java.util.List;
-
-import table.organizer.model.Consumable;
-import table.organizer.database.PersistenceManager;
-import table.organizer.exceptions.DuplicatePersonException;
-import table.organizer.model.Person;
+import table.organizer.database.TableManager;
 import android.app.TabActivity;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -14,7 +9,7 @@ import android.widget.TabHost;
 
 public class Table extends TabActivity {
 	
-	private PersistenceManager pm;
+	final private TableManager table = TableManager.getInstance(this);
 	
     /** Called when the activity is first created. */
     @Override
@@ -22,12 +17,8 @@ public class Table extends TabActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
         
-        pm = new PersistenceManager(this);
-        pm.open();
+        table.open();
         
-        TableManager.getInstance().clear();
-        fillData();
-
         Resources res = getResources(); // Resource object to get Drawables
         TabHost tabHost = getTabHost();  // The activity TabHost
         TabHost.TabSpec spec;  // Resusable TabSpec for each tab
@@ -52,41 +43,8 @@ public class Table extends TabActivity {
         tabHost.setCurrentTab(0);
     }
     
-    private void fillData() {
-    	List<Person> persons = pm.fetchPersons();
-    	List<Consumable> consumables = pm.fetchConsumables();
-    	
-    	for(Person person : persons){
-    		try {
-				TableManager.getInstance().addPerson(person.getName());
-			} catch (DuplicatePersonException e) {
-				// TODO: tem que fazer algo?
-			}
-    	}
-    	
-    	for (Consumable consumable : consumables) {
-    		
-			TableManager.getInstance().addConsumable(consumable.getName(), consumable.getPrice(), consumable.getQuantity());
-		}
-    	
-    }
-
-	void persistAll(){
-    	List<Person> persons = TableManager.getInstance().getPersons();
-    	List<Consumable> consumables = TableManager.getInstance().getConsumables();
-    	
-    	for(Person person : persons){
-    		pm.createPerson(person);
-    	}
-    	for (Consumable consumable : consumables) {
-			pm.createConsumable(consumable);
-		}
-    }
-    
     @Override
     protected void onPause() {
         super.onPause();
-        persistAll();
-     
     }
 }

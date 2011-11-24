@@ -2,7 +2,10 @@ package table.organizer;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
+import table.organizer.utils.MoneyUtils;
+import table.organizer.database.TableManager;
 import table.organizer.model.Consumable;
 import table.organizer.model.Person;
 import android.app.Activity;
@@ -21,7 +24,10 @@ import android.widget.TextView;
 
 public class ConsumedItemsActivity extends Activity {
 
-	TableManager table = TableManager.getInstance();
+	// FIXME: popular no onCreate/Resume change notify
+	private List<Consumable> consumables;
+	
+	private final TableManager table = TableManager.getInstance(this);
 
 	/** Called when the activity is first created. */
 	@Override
@@ -31,8 +37,8 @@ public class ConsumedItemsActivity extends Activity {
 	    setContentView(R.layout.consumed_items_layout);
 	    
 	    Bundle extras = getIntent().getExtras();
-	    int position = extras.getInt(table.POSITION);
-	    final Person person = table.getPerson(position);
+	    String personName = extras.getString(table.POSITION);
+	    final Person person = table.getPerson(personName);
 	    
 	    TextView name = (TextView) findViewById(R.id.name);
 	    TextView price = (TextView) findViewById(R.id.price);
@@ -53,7 +59,7 @@ public class ConsumedItemsActivity extends Activity {
 			@Override
 			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 				if (isChecked) {
-					for (Consumable consumable : table.getConsumables()) {
+					for (Consumable consumable : table.fetchConsumables()) {
 						if (!checkListAdapter.isChecked(consumable))
 							checkListAdapter.remove(consumable);
 					}
@@ -71,7 +77,7 @@ public class ConsumedItemsActivity extends Activity {
 
 	private void populateCheckList(Person person,
 			final ConsumableCheckListAdapter checkListAdapter) {
-		for (Consumable consumable : table.getConsumables()) {
+		for (Consumable consumable : table.fetchConsumables()) {
 			checkListAdapter.add(consumable, false);
 		}
 		
@@ -192,7 +198,7 @@ class ConsumableCheckListAdapter extends BaseAdapter{
 								
 				setChecked(consumable.getId(), isChecked);
 				
-				price.setText(TableManager.getInstance().printPrice(person.getPersonalBill()));
+				price.setText(MoneyUtils.printPrice(person.getPersonalBill()));
 			}
 		});
 		
