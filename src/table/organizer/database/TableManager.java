@@ -11,6 +11,7 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.database.sqlite.SQLiteStatement;
 import android.util.Log;
 
 public class TableManager {
@@ -31,6 +32,7 @@ public class TableManager {
 	private DatabaseHelper mDbHelper;
     private SQLiteDatabase mDb;
 	private Context context;
+	private static TableManager instance;
     
     private static class DatabaseHelper extends SQLiteOpenHelper {
 
@@ -55,7 +57,7 @@ public class TableManager {
         }
     }
     
-    public TableManager(Context ctx){
+    private TableManager(Context ctx){
     	context = ctx;
     }
     
@@ -98,7 +100,6 @@ public class TableManager {
     
     public long createConsumable(String name, Integer price, Integer quantity){
     	ContentValues values = new ContentValues();
-    	// FIXME: auto increment
     	values.put("id", "null");
     	values.put("name", name);
     	values.put("price", price);
@@ -132,24 +133,32 @@ public class TableManager {
     	return consumables;
     }
 
-	public static TableManager getInstance(Context context) {
-		return new TableManager(context);
+	public synchronized static TableManager getInstance(Context context) {
+		if (instance == null) {
+			instance = new TableManager(context);
+		}
+		return instance;
 	}
 
 	public int getNumberOfPersons() {
-		// mDb.query(PERSON_TABLE, columns, selection, selectionArgs, null, null, null);
-		// TODO:
-		return 0;
+		SQLiteStatement s = mDb.compileStatement("select count (*) from " + PERSON_TABLE);
+		return (int) s.simpleQueryForLong();
 	}
 
 	public int getNumberOfConsumables() {
-		// TODO Auto-generated method stub
-		return 0;
+		SQLiteStatement s = mDb.compileStatement("select count (*) from " + CONSUMABLE_TABLE);
+		return (int) s.simpleQueryForLong();
 	}
 
 	public Person getPerson(String name) {
-		// TODO Auto-generated method stub
-		return null;
+		Cursor c = mDb.query(PERSON_TABLE, new String[] {"name"}, "name=?", new String[] {name}, null, null, null);
+		c.moveToFirst();
+		name = c.getString(c.getColumnIndex("name"));
+		Person person = new Person(name);
+		
+		String query = "select id,name,price,quantity from consumes c1 INNER JOIN consumable c2 ON c1.consumable=c2.id WHERE c1.person=?";
+		c = mDb.rawQuery(query, new String[] {name});
+		return new Person(name);
 	}
 
 	public Consumable getConsumable(int consumableId) {
