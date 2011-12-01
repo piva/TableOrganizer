@@ -21,8 +21,8 @@ public class TableManager {
 //	private static final String DATABASE_CREATE = //"create table Person(name alalala PRIMARY_KEY NOT NULL UNIQUE);" +  
 //			"create table Consumable(id batata PRIMARY_KEY ASC NOT NULL UNIQUE, name text NOT NULL, price integer NOT NULL, quantity integer NOT NULL);" +
 //			"create table Consumes(person text, consumable integer, FOREIGN KEY(person) REFERENCES Person(name), FOREIGN KEY(consumable) REFERENCES Consumable(id), UNIQUE(person, consumable)); ";
-	private static final String DATABASE_CREATE_PERSON = "create table Person(name text PRIMARY_KEY NOT NULL UNIQUE);";
-	private static final String DATABASE_CREATE_CONSUMABLE = "create table Consumable(id integer PRIMARY_KEY ASC NOT NULL UNIQUE, name text NOT NULL, price integer NOT NULL, quantity integer NOT NULL);";
+	private static final String DATABASE_CREATE_PERSON = "create table Person(name text PRIMARY KEY NOT NULL UNIQUE);";
+	private static final String DATABASE_CREATE_CONSUMABLE = "create table Consumable(id integer PRIMARY KEY, name text NOT NULL, price integer NOT NULL, quantity integer NOT NULL);";
 	private static final String DATABASE_CREATE_CONSUMES = "create table Consumes(person text, consumable integer, FOREIGN KEY(person) REFERENCES Person(name), FOREIGN KEY(consumable) REFERENCES Consumable(id), UNIQUE(person, consumable)); ";
 
 	private static final int DATABASE_VERSION = 3;
@@ -98,6 +98,7 @@ public class TableManager {
     public long createConsumable(String name, Integer price, Integer quantity){
     	ContentValues values = new ContentValues();
     	// FIXME: auto increment
+    	values.put("id", "null");
     	values.put("name", name);
     	values.put("price", price);
     	values.put("quantity", quantity);
