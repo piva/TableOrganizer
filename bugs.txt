@@ -1,0 +1,3 @@
+- Na hora de criar um consumable, o tamanho do campo preço deve ter 
+limitantes diferentes para a parte inteira e decimal (ex: 9999999.00 
+é o maior valor possivel, não 9999999, fica impossivel digitar os centavos)
