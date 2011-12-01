@@ -1,5 +1,6 @@
 package table.organizer;
 
+import table.organizer.model.TableManager;
 import android.app.TabActivity;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -12,6 +13,8 @@ public class Table extends TabActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
+        
+        TableManager.getInstance(getApplicationContext());
 
         Resources res = getResources(); // Resource object to get Drawables
         TabHost tabHost = getTabHost();  // The activity TabHost
