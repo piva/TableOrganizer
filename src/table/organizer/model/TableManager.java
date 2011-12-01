@@ -119,7 +119,6 @@ public class TableManager {
 		return newPerson;
 	}
 	
-	//TODO bd
 	public boolean removePerson(String name){
 		Person person = getPersonByName(name);
 		if(person == null){
@@ -128,6 +127,10 @@ public class TableManager {
 		for (Consumable consumable : person.getConsumables()) {
 			consumable.removePerson(person);
 		}
+		
+		mDb.delete(CONSUMES_TABLE, "person=?", new String[] {name});
+		deletePerson(name);
+
 		return persons.remove(new Person(name));
 	}
 	
@@ -150,7 +153,6 @@ public class TableManager {
 		return newConsumable;
 	}
 	
-	//TODO bd
 	public boolean removeConsumable(int id){
 		Consumable consumable = getConsumableById(id);
 		if (consumable == null)
@@ -158,6 +160,10 @@ public class TableManager {
 		for (Person person : consumable.getPersons()) {
 			person.removeConsumable(consumable);
 		}
+		
+		mDb.delete(CONSUMES_TABLE, "consumable=?", new String[] {id+""});
+		deleteConsumable(id);
+		
 		return consumables.remove(consumable);
 	}
 	
@@ -170,23 +176,24 @@ public class TableManager {
 		return null;
 	}
 
-	//TODO bd
 	public void addConsumableToPerson(Consumable consumable, Person person){
-		consumable.addPerson(person);
-		person.addConsumable(consumable);
-		
-		ContentValues values = new ContentValues();
-		values.put("person", person.getName());
-    	values.put("consumable", consumable.getId());
-    	
-    	mDb.insert(CONSUMES_TABLE, null, values);
-		
+		if(consumable != null && person != null){
+			consumable.addPerson(person);
+			person.addConsumable(consumable);
+			
+			ContentValues values = new ContentValues();
+			values.put("person", person.getName());
+	    	values.put("consumable", consumable.getId());
+	    	
+	    	mDb.insert(CONSUMES_TABLE, null, values);
+		}
 	}
 	
-	//TODO bd
 	public void removeConsumableFromPerson(Consumable consumable, Person person) {
 		consumable.removePerson(person);
 		person.removeConsumable(consumable);
+		
+		mDb.delete(CONSUMES_TABLE, "person=? AND consumable=?", new String[] {person.getName(), consumable.getId()+""});
 	}
 
 	public int getNumberOfConsumables () {
@@ -213,8 +220,7 @@ public class TableManager {
 		return persons.size();
 	}
     
-    //BD Methods
-	
+    //BD Methods	
     public long createPerson(String name)
     {
     	ContentValues values = new ContentValues();
@@ -243,7 +249,7 @@ public class TableManager {
     }
     
     public void deletePerson(String name){
-    	//TODO
+    	mDb.delete(PERSON_TABLE, "name=?", new String[] {name});
     }
     
     public long createConsumable(String name, Integer price, Integer quantity){
@@ -256,8 +262,8 @@ public class TableManager {
     	return mDb.insert(CONSUMABLE_TABLE, null, values);
     }
         
-    public void deleteConsumable(int id) {
-    	// TODO Auto-generated method stub
+    public void deleteConsumable(Integer id) {
+    	mDb.delete(CONSUMABLE_TABLE, "id=?", new String[] {id.toString()});
     }
     
     public List<Consumable> fetchConsumables(){
