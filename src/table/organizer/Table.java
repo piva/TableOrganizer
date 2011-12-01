@@ -26,14 +26,14 @@ public class Table extends TabActivity {
 
         // Initialize a TabSpec for each tab and add it to the TabHost
         spec = tabHost.newTabSpec("consumable").setIndicator(res.getText(R.string.consumables),
-                          res.getDrawable(R.drawable.icon))
+                          res.getDrawable(R.drawable.ic_tab_hamburger))
                       .setContent(intent);
         tabHost.addTab(spec);
 
         // Do the same for the other tabs
         intent = new Intent().setClass(this, PersonActivity.class);
         spec = tabHost.newTabSpec("person").setIndicator(res.getText(R.string.persons),
-                          res.getDrawable(R.drawable.icon))
+                          res.getDrawable(R.drawable.ic_tab_person))
                       .setContent(intent);
         tabHost.addTab(spec);
 
