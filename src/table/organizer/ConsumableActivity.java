@@ -2,6 +2,7 @@ package table.organizer;
 
 import java.util.List;
 
+import table.organizer.utils.MoneyUtils;
 import table.organizer.database.TableManager;
 import table.organizer.model.Consumable;
 import android.app.Dialog;
@@ -199,7 +200,7 @@ public class ConsumableActivity extends ListActivity {
 			consumableView.setText(consumable.getName());
 			quantityView.setText(""+consumable.getQuantity());
 			numPersonsView.setText(""+consumable.getPersons().size());
-			priceView.setText(table.printPrice(consumable.getPrice()));
+			priceView.setText(MoneyUtils.printPrice(consumable.getPrice()));
 			
 			v.setOnClickListener(new OnClickListener() {
 

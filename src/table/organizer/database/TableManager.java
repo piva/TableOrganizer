@@ -17,10 +17,11 @@ public class TableManager {
 	
 	public final String POSITION = "POSITION";
 
+	private final String PERSON_TABLE = "Person";
+	private final String CONSUMABLE_TABLE = "Consumable";
+	private final String CONSUMES_TABLE = "Consumes";
+	
 	private static final String DATABASE_NAME = "tableorganizer";
-//	private static final String DATABASE_CREATE = //"create table Person(name alalala PRIMARY_KEY NOT NULL UNIQUE);" +  
-//			"create table Consumable(id batata PRIMARY_KEY ASC NOT NULL UNIQUE, name text NOT NULL, price integer NOT NULL, quantity integer NOT NULL);" +
-//			"create table Consumes(person text, consumable integer, FOREIGN KEY(person) REFERENCES Person(name), FOREIGN KEY(consumable) REFERENCES Consumable(id), UNIQUE(person, consumable)); ";
 	private static final String DATABASE_CREATE_PERSON = "create table Person(name text PRIMARY KEY NOT NULL UNIQUE);";
 	private static final String DATABASE_CREATE_CONSUMABLE = "create table Consumable(id integer PRIMARY KEY, name text NOT NULL, price integer NOT NULL, quantity integer NOT NULL);";
 	private static final String DATABASE_CREATE_CONSUMES = "create table Consumes(person text, consumable integer, FOREIGN KEY(person) REFERENCES Person(name), FOREIGN KEY(consumable) REFERENCES Consumable(id), UNIQUE(person, consumable)); ";
@@ -69,7 +70,7 @@ public class TableManager {
     	ContentValues values = new ContentValues();
     	values.put("name", name);
     
-    	return mDb.insert("Person", null, values);
+    	return mDb.insert(PERSON_TABLE, null, values);
     }
     
     public List<Person> fetchPersons()
@@ -78,7 +79,7 @@ public class TableManager {
     	
     	//Cursor c = mDb.query("Person", new String [] {"name"}, "name=?",
     	//		new String[] {name}, null, null, null);
-    	Cursor c = mDb.query("Person", new String [] {"name"}, 
+    	Cursor c = mDb.query(PERSON_TABLE, new String [] {"name"}, 
     			null, null, null, null, null);
 
     	c.moveToFirst();
@@ -103,7 +104,7 @@ public class TableManager {
     	values.put("price", price);
     	values.put("quantity", quantity);
     	
-    	return mDb.insert("Consumable", null, values);
+    	return mDb.insert(CONSUMABLE_TABLE, null, values);
     }
         
     public void deleteConsumable(int id) {
@@ -113,7 +114,7 @@ public class TableManager {
     public List<Consumable> fetchConsumables(){
     	List <Consumable> consumables = new ArrayList<Consumable>();
     	
-    	Cursor c = mDb.query("Consumable", new String[] {"id", "name", "price", "quantity"}, 
+    	Cursor c = mDb.query(CONSUMABLE_TABLE, new String[] {"id", "name", "price", "quantity"}, 
     			null, null, null, null, null);
     	c.moveToFirst();
     	int size = c.getCount();
@@ -136,12 +137,9 @@ public class TableManager {
 	}
 
 	public int getNumberOfPersons() {
+		// mDb.query(PERSON_TABLE, columns, selection, selectionArgs, null, null, null);
 		// TODO:
 		return 0;
-	}
-
-	public CharSequence printPrice(int personalBill) {
-		return null;
 	}
 
 	public int getNumberOfConsumables() {

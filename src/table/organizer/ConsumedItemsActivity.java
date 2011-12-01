@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import table.organizer.utils.MoneyUtils;
 import table.organizer.database.TableManager;
 import table.organizer.model.Consumable;
 import table.organizer.model.Person;
+import table.organizer.utils.MoneyUtils;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
@@ -45,7 +45,7 @@ public class ConsumedItemsActivity extends Activity {
 	    CheckBox checkBox = (CheckBox) findViewById(R.id.mine);
 	    
 	    name.setText(person.getName());
-	    price.setText(table.printPrice(person.getPersonalBill()));
+	    price.setText(MoneyUtils.printPrice(person.getPersonalBill()));
 	    
 	    ListView lv = (ListView) findViewById(R.id.items_list);
 		final ConsumableCheckListAdapter checkListAdapter = new ConsumableCheckListAdapter(this, person, price);
