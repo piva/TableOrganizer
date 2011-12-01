@@ -10,6 +10,9 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -69,6 +72,28 @@ public class PersonsConsumingActivity extends Activity {
 		populateCheckList(consumable, checkListAdapter);
 
 	}
+	
+	@Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu, menu);
+        return true;
+    }
+    
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
+        switch (item.getItemId()) {
+        case R.id.clear:
+            return true;
+        case R.id.tip:
+            return true;
+        case R.id.help:
+            return true;
+        default:
+            return super.onOptionsItemSelected(item);
+        }
+    }
 
 	private void populateCheckList(Consumable consumable,
 			final PersonCheckListAdapter checkListAdapter) {
