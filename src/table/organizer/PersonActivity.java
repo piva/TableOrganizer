@@ -5,6 +5,7 @@ import java.util.List;
 import table.organizer.database.TableManager;
 import table.organizer.exceptions.DuplicatePersonException;
 import table.organizer.model.Person;
+import table.organizer.utils.MoneyUtils;
 import android.app.Dialog;
 import android.app.ListActivity;
 import android.content.Context;
@@ -191,7 +192,7 @@ public class PersonActivity extends ListActivity {
 			final Person person = persons.get(position);
 			
 			personView.setText(person.getName());
-			priceView.setText(tm.printPrice(person.getPersonalBill()));
+			priceView.setText(MoneyUtils.printPrice(person.getPersonalBill()));
 			
 			v.setOnClickListener(new OnClickListener() {
 				

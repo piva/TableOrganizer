@@ -41,7 +41,7 @@ public class PersonsConsumingActivity extends Activity {
 	    checkBox.setText(R.string.personsConsuming);
 	    
 	    name.setText(consumable.getName());
-	    price.setText(table.printPrice(consumable.getPricePerPerson()));
+	    price.setText(MoneyUtils.printPrice(consumable.getPricePerPerson()));
 	    
 	    ListView lv = (ListView) findViewById(R.id.items_list);
 		final PersonCheckListAdapter checkListAdapter = new PersonCheckListAdapter(this, consumable, price);
