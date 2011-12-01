@@ -13,17 +13,73 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 public class TableManager {
-	private int nextId;
 	private List<Person> persons;
 	private List<Consumable> consumables;
-	private int tip;
 	
 	public final String POSITION = "POSITION";
 	
-	private static TableManager tableManager = new TableManager();
+	private final String PERSON_TABLE = "Person";
+	private final String CONSUMABLE_TABLE = "Consumable";
+	private final String CONSUMES_TABLE = "Consumes";
+	
+	private static final String DATABASE_NAME = "tableorganizer";
+	private static final String DATABASE_CREATE_PERSON = "create table Person(name text PRIMARY KEY NOT NULL UNIQUE);";
+	private static final String DATABASE_CREATE_CONSUMABLE = "create table Consumable(id integer PRIMARY KEY, name text NOT NULL, price integer NOT NULL, quantity integer NOT NULL);";
+	private static final String DATABASE_CREATE_CONSUMES = "create table Consumes(person text, consumable integer, FOREIGN KEY(person) REFERENCES Person(name), FOREIGN KEY(consumable) REFERENCES Consumable(id), UNIQUE(person, consumable)); ";
 
-	public static TableManager getInstance(){
-		return tableManager;
+	private static final int DATABASE_VERSION = 3;
+	
+	private DatabaseHelper mDbHelper;
+    private SQLiteDatabase mDb;
+	private Context context;
+	private static TableManager instance;
+	
+    private TableManager(Context ctx){		
+
+    	context = ctx;
+    	
+		open();
+		
+		persons = fetchPersons();
+		consumables = fetchConsumables();
+		fetchRelations();
+		
+    }
+    
+	public TableManager open() throws SQLException {
+    	mDbHelper = new DatabaseHelper(context);
+    	mDb = mDbHelper.getWritableDatabase();
+    	return this;
+    }
+    
+    private static class DatabaseHelper extends SQLiteOpenHelper {
+
+        DatabaseHelper(Context context) {
+            super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        }
+
+        @Override
+        public void onCreate(SQLiteDatabase db) {
+        	Log.d("DB", "Criando bancos");
+            db.execSQL(DATABASE_CREATE_PERSON);
+            db.execSQL(DATABASE_CREATE_CONSUMABLE);
+            db.execSQL(DATABASE_CREATE_CONSUMES);
+        }
+
+        @Override
+        public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+//            Log.w(TAG, "Upgrading database from version " + oldVersion + " to "
+//                    + newVersion + ", which will destroy all old data");
+            db.execSQL("DROP TABLE IF EXISTS Person");
+            onCreate(db);
+        }
+    }
+    
+	public synchronized static TableManager getInstance(Context context) {
+		if (instance == null) {
+			instance = new TableManager(context);
+		}
+		return instance;
 	}
 	
 	public String printPrice (int cents) {
@@ -36,30 +92,6 @@ public class TableManager {
 		return price;
 	}
 	
-	private TableManager() {
-		persons = new ArrayList<Person>();
-		consumables = new ArrayList<Consumable>();
-		
-		nextId = 0;
-		tip = 10;
-	}
-	
-	public int getTip() {
-		return tip;
-	}
-
-	/**
-	 * 
-	 * @param tip in percentage
-	 */
-	public void setTip(int tip) {
-		if(tip<0){
-			tip=0;
-		}
-		
-		this.tip = tip;
-	}
-
 	/**
 	 * 
 	 * @return total bill price in cents
@@ -77,11 +109,8 @@ public class TableManager {
 	
 	public Person addPerson(String name) throws DuplicatePersonException {
 
-		for (Person person : persons) {
-			if(person.getName().equals(name)){
-				throw new DuplicatePersonException("Person already exists");
-			}
-		}
+		if(createPerson(name) == -1)
+			throw new DuplicatePersonException("Person already exists");
 		
 		Person newPerson = new Person(name);
 		
@@ -90,6 +119,7 @@ public class TableManager {
 		return newPerson;
 	}
 	
+	//TODO bd
 	public boolean removePerson(String name){
 		Person person = getPersonByName(name);
 		if(person == null){
@@ -111,14 +141,16 @@ public class TableManager {
 	}
 
 	public Consumable addConsumable(String name, int price, int quantity){
+		int id = (int) createConsumable(name, price, quantity);
 		
-		Consumable newConsumable = new Consumable(name, price, quantity, ++nextId);
+		Consumable newConsumable = new Consumable(name, price, quantity, id);
 		
 		consumables.add(newConsumable);
 		
 		return newConsumable;
 	}
 	
+	//TODO bd
 	public boolean removeConsumable(int id){
 		Consumable consumable = getConsumableById(id);
 		if (consumable == null)
@@ -138,11 +170,20 @@ public class TableManager {
 		return null;
 	}
 
+	//TODO bd
 	public void addConsumableToPerson(Consumable consumable, Person person){
 		consumable.addPerson(person);
 		person.addConsumable(consumable);
+		
+		ContentValues values = new ContentValues();
+		values.put("person", person.getName());
+    	values.put("consumable", consumable.getId());
+    	
+    	mDb.insert(CONSUMES_TABLE, null, values);
+		
 	}
 	
+	//TODO bd
 	public void removeConsumableFromPerson(Consumable consumable, Person person) {
 		consumable.removePerson(person);
 		person.removeConsumable(consumable);
@@ -171,56 +212,9 @@ public class TableManager {
 	public int getNumberOfPersons() {
 		return persons.size();
 	}
-	
-	private final String PERSON_TABLE = "Person";
-	private final String CONSUMABLE_TABLE = "Consumable";
-	private final String CONSUMES_TABLE = "Consumes";
-	
-	private static final String DATABASE_NAME = "tableorganizer";
-	private static final String DATABASE_CREATE_PERSON = "create table Person(name text PRIMARY KEY NOT NULL UNIQUE);";
-	private static final String DATABASE_CREATE_CONSUMABLE = "create table Consumable(id integer PRIMARY KEY, name text NOT NULL, price integer NOT NULL, quantity integer NOT NULL);";
-	private static final String DATABASE_CREATE_CONSUMES = "create table Consumes(person text, consumable integer, FOREIGN KEY(person) REFERENCES Person(name), FOREIGN KEY(consumable) REFERENCES Consumable(id), UNIQUE(person, consumable)); ";
-
-	private static final int DATABASE_VERSION = 3;
-	
-	private DatabaseHelper mDbHelper;
-    private SQLiteDatabase mDb;
-	private Context context;
-	private static TableManager instance;
     
-    private static class DatabaseHelper extends SQLiteOpenHelper {
-
-        DatabaseHelper(Context context) {
-            super(context, DATABASE_NAME, null, DATABASE_VERSION);
-        }
-
-        @Override
-        public void onCreate(SQLiteDatabase db) {
-        	Log.d("DB", "Criando bancos");
-            db.execSQL(DATABASE_CREATE_PERSON);
-            db.execSQL(DATABASE_CREATE_CONSUMABLE);
-            db.execSQL(DATABASE_CREATE_CONSUMES);
-        }
-
-        @Override
-        public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-//            Log.w(TAG, "Upgrading database from version " + oldVersion + " to "
-//                    + newVersion + ", which will destroy all old data");
-            db.execSQL("DROP TABLE IF EXISTS Person");
-            onCreate(db);
-        }
-    }
-    
-    private TableManager(Context ctx){
-    	context = ctx;
-    }
-    
-    public TableManager open() throws SQLException {
-    	mDbHelper = new DatabaseHelper(context);
-    	mDb = mDbHelper.getWritableDatabase();
-    	return this;
-    }
-
+    //BD Methods
+	
     public long createPerson(String name)
     {
     	ContentValues values = new ContentValues();
@@ -287,12 +281,36 @@ public class TableManager {
     	return consumables;
     }
 
-	public synchronized static TableManager getInstance(Context context) {
-		if (instance == null) {
-			instance = new TableManager(context);
-		}
-		return instance;
-	}
+    private void fetchRelations() {
+    	
+    	Cursor c = mDb.query(CONSUMES_TABLE, new String [] {"person", "consumable"}, 
+    			null, null, null, null, null);
 
+    	c.moveToFirst();
+    	int size = c.getCount(); 
+    	for(int i = 0; i < size; i++, c.moveToNext()){
+    		Person relPerson = null;
+    		Consumable relConsumable = null;
+    		
+    		String fetchedPerson = c.getString(c.getColumnIndex("person"));
+    		int fetchedConsumable = c.getInt(c.getColumnIndex("consumable"));
+    		
+    		for (Person person : persons) {
+				if(person.getName().equals(fetchedPerson)){
+					relPerson = person;
+					break;
+				}
+			}
+    		for (Consumable consumable : consumables) {
+				if(consumable.getId() == fetchedConsumable){
+					relConsumable = consumable;
+					break;
+				}
+			}
+
+    		addConsumableToPerson(relConsumable, relPerson);
+    	}
+    	
+	}
 
 }

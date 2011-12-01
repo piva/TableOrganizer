@@ -24,6 +24,7 @@ public class PersonActivity extends ListActivity {
 	protected static final int DIALOG_CREATE_ITEM = 0;
 	final String tag = "TAG";
 	PersonAdapter personAdapter;
+	final private TableManager table = TableManager.getInstance(this);
 
 	/** Called when the activity is first created. */
 	@Override
@@ -117,7 +118,6 @@ public class PersonActivity extends ListActivity {
 
 	private class PersonAdapter extends BaseAdapter {
 		private LayoutInflater mInflater;
-		final private TableManager table = TableManager.getInstance();
 		
 		public void add (String name) throws DuplicatePersonException{
 			table.addPerson(name);

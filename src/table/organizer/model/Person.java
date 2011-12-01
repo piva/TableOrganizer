@@ -5,9 +5,8 @@ import java.util.List;
 
 
 public class Person {
-	TableManager table = TableManager.getInstance();
-	List<Consumable> consumables;
-	String name;
+	private List<Consumable> consumables;
+	private String name;
 	
 	public Person(String name){
 		this.name = name;
@@ -25,14 +24,12 @@ public class Person {
 	 */
 	public int getPersonalBill(){
 		int bill = 0;
-		int tip = table.getTip();
 		
 		for (Consumable consumable : consumables) {
 			bill += consumable.getPricePerPerson();
 		}
 		
-		//Int division rounded floor
-		return (bill + (bill*tip)/100);
+		return bill;
 	}
 	
 	public List<Consumable> getConsumables() {
@@ -44,7 +41,8 @@ public class Person {
 	}
 	
 	protected void addConsumable(Consumable consumable){
-		this.consumables.add(consumable);
+		if(consumable != null)
+			this.consumables.add(consumable);
 	}
 
 	@Override

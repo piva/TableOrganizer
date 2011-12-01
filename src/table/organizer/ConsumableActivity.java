@@ -22,6 +22,7 @@ public class ConsumableActivity extends ListActivity {
 	protected static final int DIALOG_CREATE_ITEM = 0;
 	final String tag = "TAG";
 	ConsumableAdapter consumableAdapter;
+	final private TableManager table = TableManager.getInstance(this);
 
 	/** Called when the activity is first created. */
 	@Override
@@ -121,7 +122,6 @@ public class ConsumableActivity extends ListActivity {
 
 	private class ConsumableAdapter extends BaseAdapter {
 		private LayoutInflater mInflater;
-		final private TableManager table = TableManager.getInstance();
 		
 		public void add (String name, int price, int quantity) {
 			table.addConsumable(name, price, quantity);
