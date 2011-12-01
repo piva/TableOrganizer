@@ -1,6 +1,7 @@
 package table.organizer;
 
 import table.organizer.model.Consumable;
+import table.organizer.model.TableManager;
 import android.app.Dialog;
 import android.app.ListActivity;
 import android.content.Context;

@@ -5,6 +5,7 @@ import java.util.HashMap;
 
 import table.organizer.model.Consumable;
 import table.organizer.model.Person;
+import table.organizer.model.TableManager;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
@@ -21,7 +22,7 @@ import android.widget.TextView;
 
 public class ConsumedItemsActivity extends Activity {
 
-	TableManager table = TableManager.getInstance();
+	final TableManager table = TableManager.getInstance();
 
 	/** Called when the activity is first created. */
 	@Override
@@ -182,11 +183,9 @@ class ConsumableCheckListAdapter extends BaseAdapter{
 				Log.d("tag", "entrei");
 				if(itemsCheck.get(consumable.getId())!=isChecked){
 					if(isChecked){
-						person.addConsumable(consumable);
-						consumable.addPerson(person);
+						TableManager.getInstance().addConsumableToPerson(consumable, person);
 					}else{
-						person.removeConsumable(consumable);
-						consumable.removePerson(person);
+						TableManager.getInstance().removeConsumableFromPerson(consumable, person);
 					}
 				}
 								

@@ -3,7 +3,6 @@ package table.organizer.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import table.organizer.TableManager;
 
 public class Person {
 	TableManager table = TableManager.getInstance();
@@ -40,11 +39,11 @@ public class Person {
 		return consumables;
 	}
 
-	public void setConsumables(List<Consumable> consumables) {
+	protected void setConsumables(List<Consumable> consumables) {
 		this.consumables = consumables;
 	}
 	
-	public void addConsumable(Consumable consumable){
+	protected void addConsumable(Consumable consumable){
 		this.consumables.add(consumable);
 	}
 
@@ -72,11 +71,11 @@ public class Person {
 		return name;
 	}
 
-	public void setName(String name) {
+	protected void setName(String name) {
 		this.name = name;
 	}
 
-	public void removeConsumable(Consumable consumable) {
+	protected void removeConsumable(Consumable consumable) {
 		consumables.remove(consumable);
 	}
 

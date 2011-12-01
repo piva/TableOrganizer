@@ -36,11 +36,11 @@ public class Consumable {
 		return persons;
 	}
 	
-	public void setPersons(List<Person> persons) {
+	protected void setPersons(List<Person> persons) {
 		this.persons = persons;
 	}
 	
-	public void addPerson(Person person){
+	protected void addPerson(Person person){
 		this.persons.add(person);
 	}
 	
@@ -48,7 +48,7 @@ public class Consumable {
 		return price;
 	}
 	
-	public void setPrice(int price) {
+	protected void setPrice(int price) {
 		this.price = price;
 	}
 	
@@ -56,7 +56,7 @@ public class Consumable {
 		return quantity;
 	}
 	
-	public void setQuantity(int quantity) {
+	protected void setQuantity(int quantity) {
 		this.quantity = quantity;
 	}
 	
@@ -64,7 +64,7 @@ public class Consumable {
 		return name;
 	}
 	
-	public void setName(String name) {
+	protected void setName(String name) {
 		this.name = name;
 	}
 
@@ -87,7 +87,7 @@ public class Consumable {
 		return id;
 	}
 
-	public void removePerson(Person person) {
+	protected void removePerson(Person person) {
 		persons.remove(person);
 	}
 }

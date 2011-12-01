@@ -5,6 +5,7 @@ import java.util.HashMap;
 
 import table.organizer.model.Consumable;
 import table.organizer.model.Person;
+import table.organizer.model.TableManager;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
@@ -181,11 +182,9 @@ class PersonCheckListAdapter extends BaseAdapter{
 
 				if(itemsCheck.get(person.getName())!=isChecked){
 					if(isChecked){
-						consumable.addPerson(person);
-						person.addConsumable(consumable);
+						TableManager.getInstance().addConsumableToPerson(consumable, person);
 					}else{
-						consumable.removePerson(person);
-						person.removeConsumable(consumable);
+						TableManager.getInstance().removeConsumableFromPerson(consumable, person);
 					}
 				}
 								

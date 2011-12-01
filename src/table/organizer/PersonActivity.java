@@ -2,6 +2,7 @@ package table.organizer;
 
 import table.organizer.exceptions.DuplicatePersonException;
 import table.organizer.model.Person;
+import table.organizer.model.TableManager;
 import android.app.Dialog;
 import android.app.ListActivity;
 import android.content.Context;
