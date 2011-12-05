@@ -26,7 +26,7 @@ public class Table extends TabActivity {
 
         // Initialize a TabSpec for each tab and add it to the TabHost
         spec = tabHost.newTabSpec("consumable").setIndicator(res.getText(R.string.consumables),
-                          res.getDrawable(R.drawable.ic_tab_hamburger))
+                          res.getDrawable(R.drawable.ic_tab_item))
                       .setContent(intent);
         tabHost.addTab(spec);
 
