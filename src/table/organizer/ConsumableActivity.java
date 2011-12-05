@@ -7,7 +7,11 @@ import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -34,13 +38,37 @@ public class ConsumableActivity extends ListActivity {
 		
 		ListView lv = getListView();
 		lv.addHeaderView(makeListHeader(consumableAdapter));
-
 		
 		setListAdapter(consumableAdapter);
 
 		lv.setTextFilterEnabled(true);
 
 	}
+	
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+    	Log.d("tag", "menu");
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu, menu);
+        return true;
+    }
+    
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
+        switch (item.getItemId()) {
+        case R.id.clear:
+        	table.clear();
+        	consumableAdapter.notifyDataSetChanged();
+            return true;
+        case R.id.tip:
+            return true;
+        case R.id.help:
+            return true;
+        default:
+            return super.onOptionsItemSelected(item);
+        }
+    }
 	
 	@Override
 	public void onResume() {

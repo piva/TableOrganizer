@@ -9,6 +9,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -22,6 +25,7 @@ import android.widget.Toast;
 public class PersonActivity extends ListActivity {
 	
 	protected static final int DIALOG_CREATE_ITEM = 0;
+	protected static final int DIALOG_CREATE_QUESTION = 1;
 	final String tag = "TAG";
 	PersonAdapter personAdapter;
 	final private TableManager table = TableManager.getInstance(this);
@@ -41,6 +45,31 @@ public class PersonActivity extends ListActivity {
 	}
 	
 	@Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu, menu);
+        return true;
+    }
+    
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
+        switch (item.getItemId()) {
+        case R.id.clear:
+        	
+        	table.clear();
+        	personAdapter.notifyDataSetChanged();
+            return true;
+        case R.id.tip:
+            return true;
+        case R.id.help:
+            return true;
+        default:
+            return super.onOptionsItemSelected(item);
+        }
+    }
+	
+	@Override
 	public void onResume() {
 		super.onResume();
 		
@@ -49,23 +78,33 @@ public class PersonActivity extends ListActivity {
 	
 	@Override
 	protected Dialog onCreateDialog(int id) {
-		Dialog dialog = createEmptyDialog();
+		Dialog dialog = null;
+//		dialog = createEmptyDialog(R.layout.add_person_dialog);
 	    switch(id) {
 	    	case DIALOG_CREATE_ITEM:
 	    		dialog = createNewItemDialog();
+	    		break;
+	    	case DIALOG_CREATE_QUESTION:
+	    		dialog = createNewQuestionDialog();
+	    		break;
 	    	default:
 	    }
 	    return dialog;
 	}
 	
-	private Dialog createEmptyDialog(){
+	private Dialog createEmptyDialog(int layout){
 		Context mContext = this;
 		Dialog dialog = new Dialog(mContext);
-
-		dialog.setContentView(R.layout.add_person_dialog);
+		
+		dialog.setContentView(layout);
 		dialog.setTitle("Custom Dialog");
-
+		
 		return dialog;
+	}
+	
+	private Dialog createNewQuestionDialog() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 	private Dialog createNewItemDialog() {

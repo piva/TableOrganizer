@@ -319,4 +319,12 @@ public class TableManager {
     	
 	}
 
+	public void clear() {
+		persons.clear();
+		consumables.clear();
+		mDb.delete(CONSUMES_TABLE, null, null);
+		mDb.delete(PERSON_TABLE, null, null);
+		mDb.delete(CONSUMABLE_TABLE, null, null);
+	}
+
 }

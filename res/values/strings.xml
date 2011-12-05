@@ -16,4 +16,7 @@
     <string name="personsConsuming">Mostrar somente consumidores deste item</string>
     <string name="currency">R$</string>
     <string name="add_item">Adicionar</string>
+    <string name="clear">Limpar</string>
+    <string name="tip">Gorjeta</string>
+    <string name="help">Ajuda</string>
 </resources>
