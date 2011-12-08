@@ -12,10 +12,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="PersonActivity"></activity>
-        <activity android:name="ConsumableActivity"></activity>
-        <activity android:name="ConsumedItemsActivity"></activity>
-        <activity android:name="PersonsConsumingActivity"></activity>
+        <activity 	android:name="PersonActivity"
+        			android:theme="@android:style/Theme.NoTitleBar"></activity>
+        <activity 	android:name="ConsumableActivity"
+        			android:theme="@android:style/Theme.NoTitleBar"></activity>
+        <activity 	android:name="ConsumedItemsActivity"
+        			android:theme="@android:style/Theme.NoTitleBar"></activity>
+        <activity 	android:name="PersonsConsumingActivity"
+        			android:theme="@android:style/Theme.NoTitleBar"></activity>
 
     </application>
 	<uses-sdk android:targetSdkVersion="5" />

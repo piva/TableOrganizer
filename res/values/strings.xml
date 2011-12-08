@@ -1,13 +1,14 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
 <resources>
     <string name="hello">Hello World, Table!</string>
     <string name="app_name">Table Organizer</string>
     <string name="consumables">Itens</string>
     <string name="persons">Pessoas</string>
     <string name="name">Nome</string>
-    <string name="quantity">Quantidade</string>
-    <string name="price">Preço</string>
+    <string name="quantity">x</string>
+    <string name="price">$</string>
     <string name="new_item">Novo Item</string>
+    <string name="new_person">Nova Pessoa</string>
     <string name="ok">Aceitar</string>
     <string name="cancel">Cancelar</string>
     <string name="add">+</string>

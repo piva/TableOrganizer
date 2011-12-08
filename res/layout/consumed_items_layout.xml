@@ -1,30 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
   xmlns:android="http://schemas.android.com/apk/res/android"
   android:orientation="vertical"
   android:layout_width="fill_parent"
   android:layout_height="fill_parent">
-    <LinearLayout android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/linearLayout1">
-    <TextView android:textAppearance="?android:attr/textAppearanceLarge"
-     android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-       android:text="@string/name"
-        android:id="@+id/name"></TextView>
-    <TextView android:textAppearance="?android:attr/textAppearanceMedium" 
-    	android:layout_width="wrap_content" 
-    	android:layout_height="wrap_content" 
-    	android:paddingLeft="10pt"
-    	android:text="@string/price" 
-    	android:id="@+id/price"></TextView>
+    <LinearLayout 
+       android:layout_height="wrap_content" 
+       android:layout_width="fill_parent" 
+       android:id="@+id/person"
+       android:gravity="center"
+       android:layout_centerHorizontal="true">
+	    <TextView
+	       android:layout_width="wrap_content"
+	       android:layout_height="wrap_content"
+	       android:text="@string/name"
+	       android:textStyle="bold"
+	       android:textSize="25dp"
+	       android:id="@+id/name">
+	    </TextView>
+	    <TextView 
+	    	android:layout_width="wrap_content" 
+	    	android:layout_height="wrap_content" 
+	    	android:paddingLeft="10pt"
+	    	android:text="@string/price" 
+	    	android:textSize="25dp"
+	    	android:id="@+id/price">
+	    </TextView>
     </LinearLayout>
     <CheckBox android:text="@string/mine" 
     	android:id="@+id/mine" 
+    	android:layout_below="@id/person"
     	android:layout_width="wrap_content" 
     	android:layout_height="wrap_content">
     </CheckBox>
     <ListView 
-    	android:layout_height="wrap_content" 
-    	android:id="@+id/items_list" 
-    	android:layout_width="fill_parent">
+    	android:layout_below="@id/mine"
+    	android:layout_height="wrap_content"
+    	android:layout_width="fill_parent" 
+    	android:id="@+id/items_list">
     </ListView>
-</LinearLayout>
+</RelativeLayout>
