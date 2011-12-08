@@ -1,22 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
   xmlns:android="http://schemas.android.com/apk/res/android"
   android:orientation="horizontal"
   android:layout_width="fill_parent"
   android:layout_height="fill_parent">
   <TextView android:id="@+id/add_person_text"
-  			  android:textAppearance="?android:attr/textAppearanceLarge"
   			  android:text="@string/add_item"
+  			  android:textAppearance="?android:attr/textAppearanceLarge"
     		  android:layout_width="wrap_content"
               android:layout_height="wrap_content"
-              android:layout_alignParentLeft="true"
-              android:layout_alignBaseline="@+id/plus_button"
-              android:textColor="#FFF"/>
-  <Button android:id="@id/plus_button"
+              android:textSize="25dp"
+              android:textColor="#00FF00"
+              android:layout_alignParentLeft="true"/>
+  <Button android:id="@+id/plus_button"
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
-              android:text="@string/add"
+              android:layout_marginRight="10dp"
+              android:background="@drawable/ic_list_add"
               android:textColor="#FFF"
+              android:layout_centerVertical="true"
               android:layout_alignParentRight="true"/>
-    
-</LinearLayout>
+</RelativeLayout>

@@ -9,14 +9,15 @@
   			  android:textAppearance="?android:attr/textAppearanceLarge"
     		  android:layout_width="wrap_content"
               android:layout_height="wrap_content"
-              android:textColor="#FFFFFF"
+              android:textSize="25dp"
+              android:textColor="#00FF00"
               android:layout_alignParentLeft="true"/>
   <Button android:id="@+id/plus_button"
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
-              android:background="@drawable/ic_add"
+              android:background="@drawable/ic_list_add"
               android:textColor="#FFF"
+              android:layout_marginRight="10dp"
               android:layout_centerVertical="true"
               android:layout_alignParentRight="true"/>
-    
 </RelativeLayout>
