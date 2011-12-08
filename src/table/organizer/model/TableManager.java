@@ -28,11 +28,13 @@ public class TableManager {
 	private static final String DATABASE_CREATE_CONSUMES = "create table Consumes(person text, consumable integer, FOREIGN KEY(person) REFERENCES Person(name), FOREIGN KEY(consumable) REFERENCES Consumable(id), UNIQUE(person, consumable)); ";
 
 	private static final int DATABASE_VERSION = 3;
+	private static final int DEFAULT_TIP = 0;
 	
 	private DatabaseHelper mDbHelper;
     private SQLiteDatabase mDb;
 	private Context context;
 	private static TableManager instance;
+	private int tip;
 	
     private TableManager(Context ctx){		
 
@@ -43,7 +45,7 @@ public class TableManager {
 		persons = fetchPersons();
 		consumables = fetchConsumables();
 		fetchRelations();
-		
+		tip = DEFAULT_TIP;
     }
     
 	public TableManager open() throws SQLException {
@@ -329,6 +331,18 @@ public class TableManager {
 		mDb.delete(CONSUMES_TABLE, null, null);
 		mDb.delete(PERSON_TABLE, null, null);
 		mDb.delete(CONSUMABLE_TABLE, null, null);
+	}
+	
+	public int getTip() {
+		return tip;
+	}
+
+	public void setTip(int tip) {
+		this.tip = tip;
+	}
+
+	public int getPersonalBill(Person person) {
+		return (person.getPersonalBill()*(100+tip))/100;
 	}
 
 }

@@ -57,18 +57,10 @@ public class ConsumableActivity extends ListActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle item selection
-        switch (item.getItemId()) {
-        case R.id.clear:
-        	table.clear();
-        	consumableAdapter.notifyDataSetChanged();
-            return true;
-        case R.id.tip:
-            return true;
-        case R.id.help:
-            return true;
-        default:
-            return super.onOptionsItemSelected(item);
+        if (!OptionsMenu.optionsMenuItemPicker(item, this, consumableAdapter)){
+        	return super.onOptionsItemSelected(item);
         }
+        return true;
     }
 	
 	@Override
@@ -84,6 +76,8 @@ public class ConsumableActivity extends ListActivity {
 	    switch(id) {
 	    	case DIALOG_CREATE_ITEM:
 	    		dialog = createNewItemDialog();
+	    	case Table.TIP_DIALOG:
+	    		dialog = OptionsMenu.createNewTipDialog(this, consumableAdapter);
 	    	default:
 	    }
 	    return dialog;
@@ -111,18 +105,43 @@ public class ConsumableActivity extends ListActivity {
 			@Override
 			public void onClick(View v) {				
 				String name = nameEditText.getText().toString();
-				int quantity = Integer.parseInt(quantityEditText.getText().toString());
-				double price = Double.parseDouble(priceEditText.getText().toString());
-				try {
-					consumableAdapter.add(name, (int) (price*100), quantity);
-				} catch (Exception e) {
-					Toast.makeText(getApplicationContext(), R.string.consumableAddError, Toast.LENGTH_SHORT).show();
+				String quantityText = quantityEditText.getText().toString();
+				String priceText = priceEditText.getText().toString();
+				Integer quantity;
+				Double price;
+				if (name.equals("")){
+					Toast.makeText(getApplicationContext(),
+							R.string.consumableDialogNameEmpty,
+							Toast.LENGTH_SHORT).show();
 				}
-				nameEditText.setText("");
-				nameEditText.requestFocus();
-				quantityEditText.setText("");
-				priceEditText.setText("");
-				dialog.dismiss();
+				else if (quantityText.equals("")){
+					Toast.makeText(getApplicationContext(),
+							R.string.consumableDialogQuantityEmpty,
+							Toast.LENGTH_SHORT).show();
+				}
+				else if (priceText.equals("")){
+					Toast.makeText(getApplicationContext(),
+							R.string.consumableDialogPriceEmpty,
+							Toast.LENGTH_SHORT).show();
+				}
+				else {
+					if (quantityText == null)
+						Log.d("tag", "qt nulo");
+					else
+						Log.d("tag", "qt ["+quantityText+"]");
+					quantity = Integer.parseInt(quantityText);
+					price = Double.parseDouble(priceText);
+					try {
+						consumableAdapter.add(name, (int) (price*100), quantity);
+						nameEditText.setText("");
+						nameEditText.requestFocus();
+						quantityEditText.setText("");
+						priceEditText.setText("");
+						dialog.dismiss();
+					} catch (Exception e) {
+						Toast.makeText(getApplicationContext(), R.string.consumableAddError, Toast.LENGTH_SHORT).show();
+					}
+				}
 			}
 		});
 		Button cancel = (Button) dialog.findViewById(R.id.add_item_cancel);

@@ -22,7 +22,7 @@ public class Person {
 	 * @param
 	 * @return personal bill to be paid in cents
 	 */
-	public int getPersonalBill(){
+	protected int getPersonalBill(){
 		int bill = 0;
 		
 		for (Consumable consumable : consumables) {

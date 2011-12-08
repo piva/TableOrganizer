@@ -3,11 +3,14 @@ package table.organizer;
 import table.organizer.exceptions.DuplicatePersonException;
 import table.organizer.model.Person;
 import table.organizer.model.TableManager;
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ListActivity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -54,21 +57,14 @@ public class PersonActivity extends ListActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle item selection
-        switch (item.getItemId()) {
-        case R.id.clear:
-        	
-        	table.clear();
-        	personAdapter.notifyDataSetChanged();
-            return true;
-        case R.id.tip:
-            return true;
-        case R.id.help:
-            return true;
-        default:
-            return super.onOptionsItemSelected(item);
-        }
+    	if (!OptionsMenu.optionsMenuItemPicker(item, this, personAdapter)){
+    		return super.onOptionsItemSelected(item);
+    	}
+    	return true;
     }
+
 	
+
 	@Override
 	public void onResume() {
 		super.onResume();
@@ -87,6 +83,8 @@ public class PersonActivity extends ListActivity {
 	    	case DIALOG_CREATE_QUESTION:
 	    		dialog = createNewQuestionDialog();
 	    		break;
+	    	case Table.TIP_DIALOG:
+	    		dialog = OptionsMenu.createNewTipDialog(this, personAdapter);
 	    	default:
 	    }
 	    return dialog;
@@ -113,19 +111,25 @@ public class PersonActivity extends ListActivity {
 		dialog.setTitle(getResources().getString(R.string.new_item));
 		final EditText nameEditText = (EditText) dialog.findViewById(R.id.person_name_input);
 		Button ok = (Button) dialog.findViewById(R.id.add_item_ok);
-		ok.setOnClickListener(new OnClickListener() {
+		ok.setOnClickListener(new OnClickListener() { 	
 			
 			@Override
 			public void onClick(View v) {
 				String name = nameEditText.getText().toString();
-				try {
-					personAdapter.add(name);
-					nameEditText.setText("");
-					dialog.dismiss();
-				} catch (DuplicatePersonException e) {
-					Toast.makeText(getApplicationContext(), R.string.duplicatePerson, Toast.LENGTH_SHORT).show();
+				if (name.equals("")){
+					Toast.makeText(getApplicationContext(),
+							R.string.personDialogNameEmpty,
+							Toast.LENGTH_SHORT).show();
 				}
-				
+				else{
+					try {
+						personAdapter.add(name);
+						nameEditText.setText("");
+						dialog.dismiss();
+					} catch (DuplicatePersonException e) {
+						Toast.makeText(getApplicationContext(), R.string.duplicatePerson, Toast.LENGTH_SHORT).show();
+					}
+				}
 			}
 		});
 		Button cancel = (Button) dialog.findViewById(R.id.add_item_cancel);
@@ -224,7 +228,7 @@ public class PersonActivity extends ListActivity {
 			final Person person = table.getPerson(position);
 			
 			personView.setText(person.getName());
-			priceView.setText(table.printPrice(person.getPersonalBill()));
+			priceView.setText(table.printPrice(table.getPersonalBill(person)));
 			
 			v.setOnClickListener(new OnClickListener() {
 				

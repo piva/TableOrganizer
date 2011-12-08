@@ -40,7 +40,7 @@ public class ConsumedItemsActivity extends Activity {
 		CheckBox checkBox = (CheckBox) findViewById(R.id.mine);
 
 		name.setText(person.getName());
-		price.setText(table.printPrice(person.getPersonalBill()));
+		price.setText(table.printPrice(table.getPersonalBill(person)));
 
 		ListView lv = (ListView) findViewById(R.id.items_list);
 		final ConsumableCheckListAdapter checkListAdapter = new ConsumableCheckListAdapter(this, person, price);
@@ -189,7 +189,7 @@ public class ConsumedItemsActivity extends Activity {
 
 					setChecked(consumable.getId(), isChecked);
 
-					price.setText(table.printPrice(person.getPersonalBill()));
+					price.setText(table.printPrice(table.getPersonalBill(person)));
 				}
 			});
 

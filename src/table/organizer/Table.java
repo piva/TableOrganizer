@@ -8,7 +8,9 @@ import android.os.Bundle;
 import android.widget.TabHost;
 
 public class Table extends TabActivity {
-    /** Called when the activity is first created. */
+    public static final int TIP_DIALOG = 177;
+
+	/** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
