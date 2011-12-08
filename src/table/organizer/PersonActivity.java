@@ -108,7 +108,7 @@ public class PersonActivity extends ListActivity {
 	private Dialog createNewItemDialog() {
 		final Dialog dialog = new Dialog(this);
 		dialog.setContentView(R.layout.add_person_dialog);
-		dialog.setTitle(getResources().getString(R.string.new_item));
+		dialog.setTitle(getResources().getString(R.string.new_person));
 		final EditText nameEditText = (EditText) dialog.findViewById(R.id.person_name_input);
 		Button ok = (Button) dialog.findViewById(R.id.add_item_ok);
 		ok.setOnClickListener(new OnClickListener() { 	

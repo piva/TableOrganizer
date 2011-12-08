@@ -4,7 +4,6 @@
   android:layout_width="fill_parent"
   android:layout_height="fill_parent" android:orientation="horizontal">
   <CheckBox
-  	android:textSize="50px"
   	android:layout_alignParentRight="true" 
   	android:checked="false" 
   	android:layout_width="wrap_content" 
@@ -13,13 +12,12 @@
   	android:id="@+id/checkbox">
   </CheckBox>
   <TextView
-  	android:textSize="50px"
+  	android:textSize="25dp"
   	android:layout_alignBaseline="@id/checkbox"
   	android:text="Item" 
   	android:layout_width="wrap_content" 
   	android:layout_height="wrap_content" 
   	android:id="@+id/item" 
   	android:layout_alignParentLeft="true">
-  </TextView>
-    
+  </TextView>    
 </RelativeLayout>

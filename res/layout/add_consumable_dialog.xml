@@ -1,43 +1,84 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
   xmlns:android="http://schemas.android.com/apk/res/android"
   android:orientation="vertical"
   android:layout_width="fill_parent"
-  android:layout_height="fill_parent">
-    <TextView android:text="@string/name"
-    	android:id="@+id/consumable_name_label"
+  android:layout_height="fill_parent"
+  android:padding="20dp" >
+    <TextView android:id="@+id/consumable_name_label"
+    	android:text="@string/name"
+    	android:textSize="25dp"
+    	android:textStyle="bold"
     	android:layout_width="wrap_content" 
-    	android:layout_height="wrap_content"></TextView>
+    	android:layout_height="wrap_content">
+   	</TextView>
     <EditText android:id="@+id/consumable_name_input" 
     	android:layout_width="fill_parent" 
     	android:layout_height="wrap_content"
-    	android:maxLength="20"
-    	>
+		android:layout_below="@id/consumable_name_label"
+    	android:maxLength="20" >
     </EditText>
-    <TextView android:text="@string/quantity" 
-    	android:id="@+id/consumable_quantity_label" 
-    	android:layout_width="wrap_content" 
-    	android:layout_height="wrap_content"></TextView>
-    <EditText android:id="@+id/consumable_quantity_input" 
-    	android:layout_width="fill_parent" 
-   		android:layout_height="wrap_content" 
-    	android:inputType="number"
-    	android:maxLength="2"></EditText>
-    <TextView android:text="@string/price"
-		android:id="@+id/consumable_price_label" 
-		android:layout_width="wrap_content" 
-		android:layout_height="wrap_content"></TextView>
-    <EditText android:id="@+id/consumable_price_input" 
-    	android:layout_width="fill_parent" 
-    	android:layout_height="wrap_content" 
-    	android:inputType="numberDecimal"
-    	android:maxLength="6"/>
-   	<Button android:id="@+id/add_item_ok"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/ok" />
-    <Button android:id="@+id/add_item_cancel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/cancel" />
-</LinearLayout>
+	<LinearLayout android:id="@+id/numbers"
+		xmlns:android="http://schemas.android.com/apk/res/android"
+	  	android:orientation="horizontal"
+	  	android:layout_width="fill_parent"
+	  	android:layout_height="wrap_content"
+	  	android:layout_below="@id/consumable_name_input"
+		android:padding="10dp"
+	  	android:gravity="center_horizontal"
+	  	android:layout_centerHorizontal="true"
+	  	android:weightSum="1.0" >
+	    <TextView android:text="@string/price"
+			android:id="@+id/consumable_price_label" 
+			android:layout_width="0dp"
+	    	android:layout_weight="0.1" 
+			android:layout_height="wrap_content"
+	    	android:textSize="30dp"
+	    	android:textStyle="bold"
+	    	android:layout_centerInParent="true">
+		</TextView>
+	    <EditText android:id="@+id/consumable_price_input" 
+	    	android:layout_width="0dp"
+	    	android:layout_weight="0.6" 
+	    	android:layout_height="wrap_content" 
+	    	android:inputType="numberDecimal"
+	    	android:maxLength="6">
+	    </EditText>
+	    <TextView android:text="@string/quantity" 
+	    	android:id="@+id/consumable_quantity_label" 
+	    	android:layout_width="0dp"
+	    	android:layout_weight="0.1"
+	    	android:layout_height="wrap_content"
+	    	android:layout_marginLeft="10dp"
+	    	android:layout_centerInParent="true"
+	    	android:textSize="30dp"
+	    	android:textStyle="bold">
+	    </TextView>
+	    <EditText android:id="@+id/consumable_quantity_input" 
+	    	android:layout_width="0dp"
+	    	android:layout_weight="0.2"
+	   		android:layout_height="wrap_content" 
+	    	android:inputType="number"
+	    	android:maxLength="2">
+	    </EditText>
+	</LinearLayout>
+	<LinearLayout
+	  xmlns:android="http://schemas.android.com/apk/res/android"
+	  android:orientation="horizontal"
+	  android:layout_width="wrap_content"
+	  android:layout_height="wrap_content"
+	  android:layout_below="@id/numbers"
+	  android:gravity="center_horizontal"
+	  android:layout_centerHorizontal="true" >
+	   	<Button android:id="@+id/add_item_ok"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:textSize="20dp"
+	        android:text="@string/ok" />
+	    <Button android:id="@+id/add_item_cancel"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:textSize="20dp"
+	        android:text="@string/cancel" />
+	</LinearLayout>
+</RelativeLayout>
