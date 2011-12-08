@@ -123,7 +123,6 @@ public class PersonActivity extends ListActivity {
 					nameEditText.setText("");
 					dialog.dismiss();
 				} catch (DuplicatePersonException e) {
-					// TODO Auto-generated catch block
 					Toast.makeText(getApplicationContext(), R.string.duplicatePerson, Toast.LENGTH_SHORT).show();
 				}
 				
