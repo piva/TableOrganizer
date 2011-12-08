@@ -76,8 +76,10 @@ public class ConsumableActivity extends ListActivity {
 	    switch(id) {
 	    	case DIALOG_CREATE_ITEM:
 	    		dialog = createNewItemDialog();
+	    		break;
 	    	case Table.TIP_DIALOG:
 	    		dialog = OptionsMenu.createNewTipDialog(this, consumableAdapter);
+	    		break;
 	    	default:
 	    }
 	    return dialog;
@@ -125,10 +127,6 @@ public class ConsumableActivity extends ListActivity {
 							Toast.LENGTH_SHORT).show();
 				}
 				else {
-					if (quantityText == null)
-						Log.d("tag", "qt nulo");
-					else
-						Log.d("tag", "qt ["+quantityText+"]");
 					quantity = Integer.parseInt(quantityText);
 					price = Double.parseDouble(priceText);
 					try {

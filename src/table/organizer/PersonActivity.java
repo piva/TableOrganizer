@@ -3,14 +3,11 @@ package table.organizer;
 import table.organizer.exceptions.DuplicatePersonException;
 import table.organizer.model.Person;
 import table.organizer.model.TableManager;
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ListActivity;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -28,7 +25,6 @@ import android.widget.Toast;
 public class PersonActivity extends ListActivity {
 	
 	protected static final int DIALOG_CREATE_ITEM = 0;
-	protected static final int DIALOG_CREATE_QUESTION = 1;
 	final String tag = "TAG";
 	PersonAdapter personAdapter;
 	final private TableManager table = TableManager.getInstance(this);
@@ -80,29 +76,12 @@ public class PersonActivity extends ListActivity {
 	    	case DIALOG_CREATE_ITEM:
 	    		dialog = createNewItemDialog();
 	    		break;
-	    	case DIALOG_CREATE_QUESTION:
-	    		dialog = createNewQuestionDialog();
-	    		break;
 	    	case Table.TIP_DIALOG:
 	    		dialog = OptionsMenu.createNewTipDialog(this, personAdapter);
+	    		break;
 	    	default:
 	    }
 	    return dialog;
-	}
-	
-	private Dialog createEmptyDialog(int layout){
-		Context mContext = this;
-		Dialog dialog = new Dialog(mContext);
-		
-		dialog.setContentView(layout);
-		dialog.setTitle("Custom Dialog");
-		
-		return dialog;
-	}
-	
-	private Dialog createNewQuestionDialog() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 	
 	private Dialog createNewItemDialog() {

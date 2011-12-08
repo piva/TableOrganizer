@@ -3,12 +3,15 @@ package table.organizer;
 import table.organizer.model.TableManager;
 import android.app.TabActivity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.widget.TabHost;
 
 public class Table extends TabActivity {
     public static final int TIP_DIALOG = 177;
+    public static final String PREFS_NAME = "SaveConfigFile";
+    public static final String TIP_KEY = "tip";
 
 	/** Called when the activity is first created. */
     @Override
@@ -40,6 +43,25 @@ public class Table extends TabActivity {
         tabHost.addTab(spec);
 
         tabHost.setCurrentTab(0);
+    }
+    
+    @Override
+    public void onPause () {
+    	super.onPause();
+    	
+        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putInt(TIP_KEY, TableManager.getInstance(this).getTip());
+        editor.commit();
+    }
+    
+    @Override
+    public void onResume () {
+    	super.onResume();
+    	
+    	SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+    	int tip = settings.getInt(TIP_KEY, TableManager.DEFAULT_TIP);
+    	TableManager.getInstance(this).setTip(tip);
     }
     
 }
