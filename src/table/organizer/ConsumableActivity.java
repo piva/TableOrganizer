@@ -20,6 +20,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class ConsumableActivity extends ListActivity {
 	
@@ -108,13 +109,15 @@ public class ConsumableActivity extends ListActivity {
 		ok.setOnClickListener(new OnClickListener() {
 			
 			@Override
-			public void onClick(View v) {
-				
-				
+			public void onClick(View v) {				
 				String name = nameEditText.getText().toString();
 				int quantity = Integer.parseInt(quantityEditText.getText().toString());
 				double price = Double.parseDouble(priceEditText.getText().toString());
-				consumableAdapter.add(name, (int) (price*100), quantity);
+				try {
+					consumableAdapter.add(name, (int) (price*100), quantity);
+				} catch (Exception e) {
+					Toast.makeText(getApplicationContext(), R.string.consumableAddError, Toast.LENGTH_SHORT).show();
+				}
 				nameEditText.setText("");
 				nameEditText.requestFocus();
 				quantityEditText.setText("");
@@ -151,8 +154,14 @@ public class ConsumableActivity extends ListActivity {
 	private class ConsumableAdapter extends BaseAdapter {
 		private LayoutInflater mInflater;
 		
-		public void add (String name, int price, int quantity) {
-			table.addConsumable(name, price, quantity);
+		public void add (String name, int price, int quantity) throws Exception{
+			
+			// FIXME: WTF?!?!
+			try {
+				table.addConsumable(name, price, quantity);
+			} catch (Exception e) {
+				throw e;
+			}
 			notifyDataSetChanged();
 		}
 		

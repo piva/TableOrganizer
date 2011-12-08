@@ -143,7 +143,7 @@ public class TableManager {
 		return null;
 	}
 
-	public Consumable addConsumable(String name, int price, int quantity){
+	public Consumable addConsumable(String name, int price, int quantity) throws Exception {
 		int id = (int) createConsumable(name, price, quantity);
 		
 		Consumable newConsumable = new Consumable(name, price, quantity, id);
@@ -252,14 +252,18 @@ public class TableManager {
     	mDb.delete(PERSON_TABLE, "name=?", new String[] {name});
     }
     
-    public long createConsumable(String name, Integer price, Integer quantity){
+    public long createConsumable(String name, Integer price, Integer quantity) throws Exception {
     	ContentValues values = new ContentValues();
-    	values.put("id", "null");
     	values.put("name", name);
     	values.put("price", price);
     	values.put("quantity", quantity);
     	
-    	return mDb.insert(CONSUMABLE_TABLE, null, values);
+    	long id = mDb.insert(CONSUMABLE_TABLE, null, values);
+    	
+    	if(id == -1)
+    		throw new Exception("Não foi possível inserir consumable");
+    	
+    	return id;
     }
         
     public void deleteConsumable(Integer id) {
