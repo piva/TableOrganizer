@@ -3,9 +3,11 @@ package table.organizer;
 import table.organizer.exceptions.DuplicatePersonException;
 import table.organizer.model.Person;
 import table.organizer.model.TableManager;
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ListActivity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -234,7 +236,7 @@ public class PersonActivity extends ListActivity {
 				
 				@Override
 				public void onClick(View v) {
-					Intent intent = new Intent(getApplicationContext(), ConsumedItemsActivity.class);
+					Intent intent = new Intent(PersonActivity.this, ConsumedItemsActivity.class);
 					Bundle extras = new Bundle();
 					extras.putInt(table.POSITION, position);
 					intent.putExtras(extras);
@@ -247,7 +249,25 @@ public class PersonActivity extends ListActivity {
 				
 				@Override
 				public void onClick(View v) {
-					remove(person.getName());
+					AlertDialog.Builder builder = new AlertDialog.Builder(PersonActivity.this);
+					builder.setMessage(R.string.confirmRemovePerson)
+					.setCancelable(false)
+					.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+						
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							remove(person.getName());
+				        }
+					})
+					.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+						
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							dialog.cancel();
+						}
+					});
+					AlertDialog alert = builder.create();
+					alert.show();
 				}
 			});
 			

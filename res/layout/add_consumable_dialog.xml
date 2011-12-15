@@ -17,6 +17,7 @@
     	android:layout_height="wrap_content"
 		android:layout_below="@id/consumable_name_label"
     	android:maxLength="20" >
+    	<requestFocus/>
     </EditText>
 	<LinearLayout android:id="@+id/numbers"
 		xmlns:android="http://schemas.android.com/apk/res/android"
@@ -59,6 +60,7 @@
 	    	android:layout_weight="0.2"
 	   		android:layout_height="wrap_content" 
 	    	android:inputType="number"
+	    	android:text="1"
 	    	android:maxLength="2">
 	    </EditText>
 	</LinearLayout>

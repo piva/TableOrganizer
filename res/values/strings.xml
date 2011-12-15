@@ -28,5 +28,7 @@
 	<string name="confirmClearTable">Você deseja realmente limpar os dados do aplicativo?</string>
 	<string name="tipDialogTitle">Escolha a Gorjeta</string>
 	<string name="in_percentage">(em %)</string>
+	<string name="confirmRemoveItem">Você deseja realmente remover este item?</string>
+	<string name="confirmRemovePerson">Você deseja realmente remover esta pessoa?</string>
 	<string name="total">Total</string>
 </resources>
