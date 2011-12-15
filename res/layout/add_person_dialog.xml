@@ -17,6 +17,7 @@
     	android:layout_height="wrap_content"
     	android:layout_below="@id/person_name_label"
     	android:maxLength="20">
+    	<requestFocus/>
     </EditText>
 	<LinearLayout
 	  xmlns:android="http://schemas.android.com/apk/res/android"

@@ -2,9 +2,11 @@ package table.organizer;
 
 import table.organizer.model.Consumable;
 import table.organizer.model.TableManager;
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ListActivity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -133,7 +135,7 @@ public class ConsumableActivity extends ListActivity {
 						consumableAdapter.add(name, (int) (price*100), quantity);
 						nameEditText.setText("");
 						nameEditText.requestFocus();
-						quantityEditText.setText("");
+						quantityEditText.setText("1");
 						priceEditText.setText("");
 						dialog.dismiss();
 					} catch (Exception e) {
@@ -254,7 +256,7 @@ public class ConsumableActivity extends ListActivity {
 
 				@Override
 				public void onClick(View v) {
-					Intent intent = new Intent(getApplicationContext(), PersonsConsumingActivity.class);
+					Intent intent = new Intent(ConsumableActivity.this, PersonsConsumingActivity.class);
 					Bundle extras = new Bundle();
 					extras.putInt(table.POSITION, position);
 					intent.putExtras(extras);
@@ -267,7 +269,25 @@ public class ConsumableActivity extends ListActivity {
 				
 				@Override
 				public void onClick(View v) {
-					remove(consumable.getId());
+					AlertDialog.Builder builder = new AlertDialog.Builder(ConsumableActivity.this);
+					builder.setMessage(R.string.confirmRemoveItem)
+					.setCancelable(false)
+					.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+						
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							remove(consumable.getId());
+				        }
+					})
+					.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+						
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							dialog.cancel();
+						}
+					});
+					AlertDialog alert = builder.create();
+					alert.show();
 				}
 			});
 			
