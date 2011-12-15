@@ -121,6 +121,20 @@ public class PersonActivity extends ListActivity {
 		});
 		return dialog;
 	}
+	
+	private String getTabTotalText(){
+		return table.printPrice(table.getTotalBill())
+				+ " + " + table.getTip() + "% = "
+				+ table.printPrice(table.getTotalBillWithTip());
+	}
+	
+	public void updateTabTotal() {
+		TextView tabTotal = (TextView) findViewById(R.id.tab_total);
+		
+		String text = getTabTotalText();
+		
+		tabTotal.setText(text);
+	}
 
 	private View makeListHeader(final PersonAdapter personAdapter) {
 		LayoutInflater inflater = (LayoutInflater)this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -131,9 +145,14 @@ public class PersonActivity extends ListActivity {
 			@Override
 			public void onClick(View v) {
 				showDialog(DIALOG_CREATE_ITEM);
-				personAdapter.notifyDataSetChanged();
+				personAdapter.notifyDataSetChanged();	
 			}
 		});
+		
+		TextView tabTotal = (TextView) v.findViewById(R.id.tab_total);
+		String text = getTabTotalText();
+
+		tabTotal.setText(text);
 		return v;
 	}
 
@@ -153,6 +172,8 @@ public class PersonActivity extends ListActivity {
 		@Override
 		public void notifyDataSetChanged() {
 			super.notifyDataSetChanged();
+
+			updateTabTotal();
 		}
 		
 		public PersonAdapter(Context context) {
@@ -234,5 +255,4 @@ public class PersonActivity extends ListActivity {
 		}
 
 	}
-
 }

@@ -109,6 +109,10 @@ public class TableManager {
 		return price;
 	}
 	
+	public int getTotalBillWithTip(){
+		return (int)(getTotalBill()*(100+tip))/100;
+	}
+	
 	public Person addPerson(String name) throws DuplicatePersonException {
 
 		if(createPerson(name) == -1)
